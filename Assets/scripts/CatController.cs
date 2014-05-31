@@ -3,13 +3,10 @@ using System.Collections;
 
 public class CatController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+	void killTheCat()
+	{
+		DestroyObject ( gameObject );
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+
 }

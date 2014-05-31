@@ -5,6 +5,10 @@ public class ZombieController : MonoBehaviour {
 	public float moveSpeed;
 	public float turnSpeed;
 
+	[SerializeField]
+	private PolygonCollider2D[] colliders;
+
+	private int currentColliderIndex = 0;
 	private Vector3 moveDirection = Vector3.right;
 
 	// Use this for initialization
@@ -34,5 +38,11 @@ public class ZombieController : MonoBehaviour {
 			                 Quaternion.Euler (0, 0, targetAngle),
 			                 turnSpeed * Time.deltaTime);
 
+	}
+
+	public void SetColliderForSprite( int spriteNum ) {
+		colliders [currentColliderIndex].enabled = false;
+		currentColliderIndex = spriteNum;
+		colliders [currentColliderIndex].enabled = true;
 	}
 }
