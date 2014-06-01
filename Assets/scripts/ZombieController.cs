@@ -37,6 +37,7 @@ public class ZombieController : MonoBehaviour {
 			Quaternion.Slerp (transform.rotation,
 			                 Quaternion.Euler (0, 0, targetAngle),
 			                 turnSpeed * Time.deltaTime);
+		EnforceBounds ();
 
 	}
 
@@ -45,4 +46,33 @@ public class ZombieController : MonoBehaviour {
 		currentColliderIndex = spriteNum;
 		colliders [currentColliderIndex].enabled = true;
 	}
+
+	
+	void OnTriggerEnter2D( Collider2D other )
+	{
+		Debug.Log ("Hit " + other.gameObject);
+	}
+
+	private void EnforceBounds(){
+		Vector3 newPosition = transform.position;
+		Camera mainCamera = Camera.main;
+		Vector3 cameraPosition = mainCamera.transform.position;
+
+		float xDist = mainCamera.aspect * mainCamera.orthographicSize;
+		float xMax = cameraPosition.x + xDist;
+		float xMin = cameraPosition.x - xDist;
+		float yMax = cameraPosition.y + mainCamera.orthographicSize;
+		float yMin = cameraPosition.y - mainCamera.orthographicSize;
+
+		if (newPosition.x < xMin || newPosition.x > xMax) {
+			newPosition.x = Mathf.Clamp (newPosition.x, xMin, xMax);
+			moveDirection.x = -moveDirection.x;
+		}
+		if (newPosition.y > yMax || newPosition.y < yMin) {
+			newPosition.y = Mathf.Clamp (newPosition.y, yMin, yMax);
+			moveDirection.y = -moveDirection.y;
+		}
+		transform.position = newPosition;
+	}
+
 }
